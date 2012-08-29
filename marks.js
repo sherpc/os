@@ -18,16 +18,17 @@ function check_labels() {
   return sum == 100;
 }
 
-function total(data) {
-  sum = 0;
+function prepare_totals(data) {
+  totals = [];
   labels.forEach(function(label) {
-    sum += data[label.id] * label.percent / 100;
+    total = data[label.id] * label.percent / 100;
+    totals[label.id] = total;
+    totals['total'] += total;
   });
-  return sum;
+  return totals;
 }
 
-function prepare_chart_data(data) {
-  data['total'] = total(data);
+function prepare_chart_data(data,totals) {
   chart_data = [];
   labels.forEach(function(label) {
     chart_data.push({
@@ -36,19 +37,21 @@ function prepare_chart_data(data) {
       y: data[label.id],
     });
   });
-  labels.forEach(function(label) {
+  labels.reverse().forEach(function(label) {
     chart_data.push({
       name: label.name,
-      color: '#89a54e',
-      y: data[label.id],
-      x: 5
+      color: label.color,
+      x: 5,
+      y: totals[label.id],
     });
   });
+  labels.reverse();
   return chart_data;
 }
 
 function create_chart(render_to,name,data) {
-  chart_data = prepare_chart_data(data);
+  totals = prepare_totals(data);
+  chart_data = prepare_chart_data(data,totals);
   new Highcharts.Chart({
     chart: {
       renderTo: render_to,
@@ -74,11 +77,13 @@ function create_chart(render_to,name,data) {
     },
     plotOptions: {
       column: {
+        stacking: 'normal'
       }
     }, 
     series: [{
       name: 'Marks',
-      data: chart_data
+      data: chart_data,
+      stack: 0
     }]
   });
 }
