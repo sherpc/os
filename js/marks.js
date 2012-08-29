@@ -1,10 +1,11 @@
 $(function() {
   if (check_labels()) {
     data.forEach(function(elem) {
-      container = elem.name + '_container';
-      $("body").append('<div id="' + container + '" class="chart"></div>');
+      container = 'container_' + Math.random();
+      $("#charts").append('<div id="' + container + '" class="chart"></div>');
       create_chart(container, elem.name, elem);
     });
+    $("#charts").append('<div class="cb"></div>');
   } else {
     alert('Invalid label percents!');
   }
@@ -19,7 +20,7 @@ function check_labels() {
 }
 
 function prepare_totals(data) {
-  totals = [];
+  totals = {total: 0};
   labels.forEach(function(label) {
     total = data[label.id] * label.percent / 100;
     totals[label.id] = total;
@@ -49,21 +50,8 @@ function prepare_chart_data(data,totals) {
   return chart_data;
 }
 
-function create_chart(render_to,name,data) {
-  totals = prepare_totals(data);
-  chart_data = prepare_chart_data(data,totals);
-  new Highcharts.Chart({
-    chart: {
-      renderTo: render_to,
-      type: 'column'
-    },
-    title: {
-      text: name + ' marks'
-    },
-    xAxis: {
-      categories: []
-    },
-    yAxis: {
+function prepare_y_axis(totals) {
+  y_axis = {
       min: 0,
       max: 100,
       title: {
@@ -71,10 +59,39 @@ function create_chart(render_to,name,data) {
       },
       plotLines: [{
         color: '#FF0000',
-         width: 2,
-         value: 52
+         width: 1,
+         value: 50,
+         zIndex: 3
       }]
+  };
+  return y_axis;
+}
+
+function create_chart(render_to,name,data) {
+  totals = prepare_totals(data);
+  chart_data = prepare_chart_data(data,totals);
+  y_axis = prepare_y_axis(totals);
+  new Highcharts.Chart({
+    chart: {
+      renderTo: render_to,
+      marginRight: 50
     },
+    credits: {
+      enabled: false
+    },
+    legend: {
+      enabled: false
+    },
+    title: {
+      text: name + ' marks'
+    },
+    xAxis: {
+      categories: [],
+      labels: {
+        enabled: false
+      },
+    },
+    yAxis: y_axis,
     plotOptions: {
       column: {
         stacking: 'normal'
@@ -83,7 +100,26 @@ function create_chart(render_to,name,data) {
     series: [{
       name: 'Marks',
       data: chart_data,
-      stack: 0
+      type: 'column',
+      stack: 0,
+      animation: false,
+    },{
+      name: 'Total',
+      marker: { enabled: false },
+      data: [{
+        dataLabels: {
+          enabled: true,
+          align: 'left',
+          x: 15,
+          y: 4,
+          style: {
+            fontWeight: 'bold'
+          }
+        },
+        y: totals['total'],
+        x: 5
+      }],
+      animation: false,
     }]
   });
 }
