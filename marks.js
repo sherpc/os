@@ -1,18 +1,9 @@
-var john_data = { 
-  seminar: 50,
-  lab1:100,
-  lab2:50,
-  exam:60
-};
-var petr_data = { 
-  seminar: 100,
-  lab1:0,
-  lab2:0,
-  exam:100
-};
 $(function() {
-  create_chart('container', 'John', john_data);
-  create_chart('container2', 'Petr', petr_data);
+  data.forEach(function(elem) {
+    container = elem.name + '_container';
+    $("body").append('<div id="' + container + '" class="chart"></div>');
+    create_chart(container, elem.name, elem);
+  });
 });
 
 function total(data) {
