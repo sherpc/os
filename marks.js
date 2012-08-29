@@ -1,13 +1,29 @@
 $(function() {
-  data.forEach(function(elem) {
-    container = elem.name + '_container';
-    $("body").append('<div id="' + container + '" class="chart"></div>');
-    create_chart(container, elem.name, elem);
-  });
+  if (check_labels()) {
+    data.forEach(function(elem) {
+      container = elem.name + '_container';
+      $("body").append('<div id="' + container + '" class="chart"></div>');
+      create_chart(container, elem.name, elem);
+    });
+  } else {
+    alert('Invalid label percents!');
+  }
 });
 
+function check_labels() {
+  sum = 0;
+  labels.forEach(function(label) {
+    sum += label.percent;
+  });
+  return sum == 100;
+}
+
 function total(data) {
-  return (data['seminar'] * 10 + data['lab1'] * 20 + data['lab2'] * 20 + data['exam'] * 50) / 100;
+  sum = 0;
+  labels.forEach(function(label) {
+    sum += data[label.id] * label.percent / 100;
+  });
+  return sum;
 }
 
 function prepare_chart_data(data) {
@@ -20,10 +36,13 @@ function prepare_chart_data(data) {
       y: data[label.id],
     });
   });
-  chart_data.push({
-    name: 'Total',
-    color: '#89a54e',
-    y: data['total'],
+  labels.forEach(function(label) {
+    chart_data.push({
+      name: label.name,
+      color: '#89a54e',
+      y: data[label.id],
+      x: 5
+    });
   });
   return chart_data;
 }

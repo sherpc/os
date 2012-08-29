@@ -21,17 +21,33 @@ var data = [{
 var labels = [{
   id: 'seminar',
   name: 'Seminar work',
+  percent: 10,
   color: '#4572a7'
 },{
   id: 'lab1',
   name: 'Lab 1',
-  color: '#aa4643'
+  percent: 20,
+  color: '#89a54e'
 },{
   id: 'lab2',
   name: 'Lab 2',
-  color: '#aa4643'
+  percent: 20,
+  color: '#89a54e'
 },{
   id: 'exam',
   name: 'Exam',
+  percent: 50,
   color: '#80699b'
 }];
+
+/*
+ 
+  labels.forEach(function(label) {
+    chart_data.push({
+      name: label.name,
+      color: '#89a54e',
+      y: data[label.id],
+      x: 5
+    });
+  });
+ */
