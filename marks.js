@@ -1,13 +1,33 @@
-var chart1;
-var john_data = [50, 100, 50, 60];
+var john_data = { 
+  seminar: 50,
+  lab1:100,
+  lab2:50,
+  exam:60
+};
+var petr_data = { 
+  seminar: 100,
+  lab1:0,
+  lab2:0,
+  exam:100
+};
 $(function() {
-  chart1 = new Highcharts.Chart({
+  create_chart('container', 'John', john_data);
+  create_chart('container2', 'Petr', petr_data);
+});
+
+function total(data) {
+  return (data['seminar'] * 10 + data['lab1'] * 20 + data['lab2'] * 20 + data['exam'] * 50) / 100;
+}
+
+function create_chart(render_to,name,data) {
+  data['total'] = total(data);
+  new Highcharts.Chart({
     chart: {
-      renderTo: 'container',
+      renderTo: render_to,
       type: 'column'
     },
     title: {
-      text: 'John Marks'
+      text: name + ' marks'
     },
     xAxis: {
       categories: []
@@ -16,7 +36,7 @@ $(function() {
       min: 0,
       max: 100,
       title: {
-        text: 'Fruit eaten'
+        text: 'Mark'
       },
       plotLines: [{
         color: '#FF0000',
@@ -29,40 +49,29 @@ $(function() {
       }
     }, 
     series: [{
-      name: 'Seminar work',
+      name: 'Marks',
       data: [{
+        name: 'Seminar work',
         color: '#4572a7',
-        y: 50,
-        x: 1
-      }]
-    },{
-      name: 'Lab 1',
-      data: [{
+        y: data['seminar'],
+      },{
+        name: 'Lab 1',
         color: '#aa4643',
-        y: 100,
-        x: 2
-      }]
-    },{
-      name: 'Lab 2',
-      data: [{
+        y: data['lab1'],
+      },{
+        name: 'Lab 2',
         color: '#aa4643',
-        y: 50,
-        x: 2
-      }]
-    },{
-      name: 'Exam',
-      data: [{
+        y: data['lab2'],
+      },{
+        name: 'Exam',
         color: '#80699b',
-        y: 60,
-        x: 3
-      }]
-    },{
-      name: 'Total',
-      data: [{
+        y: data['exam'],
+      },{
+        name: 'Total',
         color: '#89a54e',
-        y: 65,
-        x: 4
+        y: data['total'],
+        x: 5
       }]
     }]
   });
-});
+}
