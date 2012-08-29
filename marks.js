@@ -10,8 +10,26 @@ function total(data) {
   return (data['seminar'] * 10 + data['lab1'] * 20 + data['lab2'] * 20 + data['exam'] * 50) / 100;
 }
 
-function create_chart(render_to,name,data) {
+function prepare_chart_data(data) {
   data['total'] = total(data);
+  chart_data = [];
+  labels.forEach(function(label) {
+    chart_data.push({
+      name: label.name,
+      color: label.color,
+      y: data[label.id],
+    });
+  });
+  chart_data.push({
+    name: 'Total',
+    color: '#89a54e',
+    y: data['total'],
+  });
+  return chart_data;
+}
+
+function create_chart(render_to,name,data) {
+  chart_data = prepare_chart_data(data);
   new Highcharts.Chart({
     chart: {
       renderTo: render_to,
@@ -41,28 +59,7 @@ function create_chart(render_to,name,data) {
     }, 
     series: [{
       name: 'Marks',
-      data: [{
-        name: 'Seminar work',
-        color: '#4572a7',
-        y: data['seminar'],
-      },{
-        name: 'Lab 1',
-        color: '#aa4643',
-        y: data['lab1'],
-      },{
-        name: 'Lab 2',
-        color: '#aa4643',
-        y: data['lab2'],
-      },{
-        name: 'Exam',
-        color: '#80699b',
-        y: data['exam'],
-      },{
-        name: 'Total',
-        color: '#89a54e',
-        y: data['total'],
-        x: 5
-      }]
+      data: chart_data
     }]
   });
 }
