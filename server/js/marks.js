@@ -1,5 +1,6 @@
 $(function() {
-  $.getJSON('/json/', function(result) {
+  url = '/json/' + $("#email").html();
+  $.getJSON(url, function(result) {
     $("#loading").hide();
     data = result;
     if (check_labels()) {
