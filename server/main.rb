@@ -14,7 +14,7 @@ module JsonFromGoogle
     get_worksheet.rows.drop(1).each do |row|
       return [student_from(row)] if row[2] == email
     end
-    raise "Email #{email} not found!"
+    []
   end
   
   private

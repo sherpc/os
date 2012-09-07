@@ -3,6 +3,10 @@ $(function() {
   $.getJSON(url, function(result) {
     $("#loading").hide();
     data = result;
+    if (data.length == 0) {
+      alert('Email not found!');
+      return;
+    }
     if (check_labels()) {
       data.forEach(function(elem) {
         container = 'container_' + Math.random();
