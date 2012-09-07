@@ -1,14 +1,18 @@
 $(function() {
-  if (check_labels()) {
-    data.forEach(function(elem) {
-      container = 'container_' + Math.random();
-      $("#charts").append('<div id="' + container + '" class="chart"></div>');
-      create_chart(container, elem.name, elem);
-    });
-    $("#charts").append('<div class="cb"></div>');
-  } else {
-    alert('Invalid label percents!');
-  }
+  $.getJSON('/json/', function(result) {
+    $("#loading").hide();
+    data = result;
+    if (check_labels()) {
+      data.forEach(function(elem) {
+        container = 'container_' + Math.random();
+        $("#charts").append('<div id="' + container + '" class="chart"></div>');
+        create_chart(container, elem.name, elem);
+      });
+      $("#charts").append('<div class="cb"></div>');
+    } else {
+      alert('Invalid label percents!');
+    }
+  });
 });
 
 function check_labels() {
@@ -83,7 +87,7 @@ function create_chart(render_to,name,data) {
       enabled: false
     },
     title: {
-      text: name + ' marks'
+      text: name
     },
     xAxis: {
       categories: [],

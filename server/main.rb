@@ -28,30 +28,43 @@ module JsonFromGoogle
   def self.student_from row
     student = {}
     student["name"] = row[0]+" "+row[1]
-    student["seminar"] = row[3]
-    student["lab1"] = row[4]
-    student["lab2"] = row[5]
-    student["exam"] = row[6]
+    student["seminar"] = row[3].to_i
+    student["lab1"] = row[4].to_i
+    student["lab2"] = row[5].to_i
+    student["exam"] = row[6].to_i
     student
   end
 end
 
 class App < E
-  charset 'UTF-8'
+  charset 'utf-8'
   map '/'
   view_path 'views'
   engine :Haml
 
   def json email=nil
+    content_type! '.json'
     if email.nil?
-      return JsonFromGoogle::all_marks
+      return JsonFromGoogle::all_marks.to_json
     else
-      return JsonFromGoogle::marks(email)
+      return JsonFromGoogle::marks(email).to_json
     end
   end
   
-  def marks email
-    render_partial
+  def marks email=nil
+    if email.nil?
+      render_partial
+    else
+      email
+    end
+  end
+
+  setup :js do
+    format :js
+  end
+
+  def js file
+    File.read("js/#{file}.js")
   end
 
 end
