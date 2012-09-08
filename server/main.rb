@@ -8,12 +8,12 @@ module JsonFromGoogle
     get_worksheet.rows.drop(1).each do |row|
       data << student_from(row)
     end
-    data.to_json
+    to_json data
   end
 
   def self.marks email
     get_worksheet.rows.drop(1).each do |row|
-      return [student_from(row)].to_json if row[2] == email
+      return to_json([student_from(row)]) if row[2] == email
     end
     []
   end
@@ -34,6 +34,11 @@ module JsonFromGoogle
     student["lab2"] = row[5].to_i
     student["exam"] = row[6].to_i
     student
+  end
+
+  def to_json data
+    require "jwt"
+    data.to_json
   end
 end
 
