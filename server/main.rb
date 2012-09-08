@@ -1,5 +1,6 @@
-require "e"
+require 'json'
 require "google_drive"
+require "e"
 
 module JsonFromGoogle
   def self.all_marks
@@ -7,12 +8,12 @@ module JsonFromGoogle
     get_worksheet.rows.drop(1).each do |row|
       data << student_from(row)
     end
-    data.to_json
+    data
   end
 
   def self.marks email
     get_worksheet.rows.drop(1).each do |row|
-      return [student_from(row)].to_json if row[2] == email
+      return [student_from(row)] if row[2] == email
     end
     []
   end
@@ -45,9 +46,9 @@ class App < E
   def json email=nil
     content_type! '.json'
     if email.nil?
-      return JsonFromGoogle::all_marks
+      return JsonFromGoogle::all_marks.to_json
     else
-      return JsonFromGoogle::marks(email)
+      return JsonFromGoogle::marks(email).to_json
     end
   end
   
