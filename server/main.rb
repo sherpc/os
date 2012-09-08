@@ -7,12 +7,12 @@ module JsonFromGoogle
     get_worksheet.rows.drop(1).each do |row|
       data << student_from(row)
     end
-    data
+    data.to_json
   end
 
   def self.marks email
     get_worksheet.rows.drop(1).each do |row|
-      return [student_from(row)] if row[2] == email
+      return [student_from(row)].to_json if row[2] == email
     end
     []
   end
@@ -45,9 +45,9 @@ class App < E
   def json email=nil
     content_type! '.json'
     if email.nil?
-      return JsonFromGoogle::all_marks.to_json
+      return JsonFromGoogle::all_marks
     else
-      return JsonFromGoogle::marks(email).to_json
+      return JsonFromGoogle::marks(email)
     end
   end
   
