@@ -2,6 +2,7 @@ require "google_drive"
 require "e"
 
 module JsonFromGoogle
+  include JWT
   def self.all_marks
     data = []
     get_worksheet.rows.drop(1).each do |row|
