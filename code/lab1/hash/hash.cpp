@@ -24,3 +24,15 @@ void Hash<Key, T>::EnsureSize() {
     this.data[i] = oldData[i];
   delete[] oldData;
 }
+
+template<class Key, class T>
+void Hash<Key, T>::Add(Key key, T value) {
+  EnsureSize();
+  this.data[this.count] = Hash::Pair(key, value);
+  this.count++;
+}
+
+template<class Key, class T>
+int Hash<Key, T>::Length() {
+  return this.count;
+}
