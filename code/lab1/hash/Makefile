@@ -13,6 +13,6 @@ main.o : main.cpp hash.o
 	$(CC) $(CFLAGS) main.cpp
 
 hash.o : hash.h hash.cpp
-	$(CC) $(CFLAGS) hash.cpp hash.h
+	$(CC) $(CFLAGS) hash.cpp 
 clean :
 	rm *.o $(PROG)
