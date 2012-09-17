@@ -12,6 +12,10 @@ class GoogleConnector
   private
 
   def session
-    @session ||= GoogleDrive.login("aleksandrsher@gmail.com", "G0Dsp#ll")
+    @session ||= GoogleDrive.login(*google_info)
+  end
+
+  def google_info
+    /(.+?):(.+)/.match(File.read("secret")) { |m| return m[1], m[2] }
   end
 end
