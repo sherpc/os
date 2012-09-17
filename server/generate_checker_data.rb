@@ -1,5 +1,4 @@
-require 'json'
-require "google_drive"
+require_relative "google_connector.rb"
 
 class Student < Hash
   def initialize row
@@ -16,20 +15,14 @@ end
 
 module DataFromGoogle
   def self.generate_data filename
+    connection = GoogleConnector.new("0AmvGiQY4WDYHdFhxdnI1R0lYY19WREFBX21KdHRlZ0E")
     File.open(filename, 'w') do |f|
-      get_worksheet.rows.drop(1).each do |row|
+      connection.get_worksheet(3).rows.drop(1).each do |row|
         f << Student.new(row)
       end
     end
   end
 
-  private
-
-  def self.get_worksheet
-    session = GoogleDrive.login("aleksandrsher@gmail.com", "G0Dsp#ll")
-    key = "0AmvGiQY4WDYHdFhxdnI1R0lYY19WREFBX21KdHRlZ0E"
-    ws = session.spreadsheet_by_key(key).worksheets[3]
-  end
 end
 
 DataFromGoogle::generate_data(ARGV[0])
