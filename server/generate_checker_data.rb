@@ -14,9 +14,8 @@ class Student < Hash
   end
 end
 
-module JsonFromGoogle
+module DataFromGoogle
   def self.generate_data filename
-    data = []
     File.open(filename, 'w') do |f|
       get_worksheet.rows.drop(1).each do |row|
         f << Student.new(row)
@@ -31,7 +30,6 @@ module JsonFromGoogle
     key = "0AmvGiQY4WDYHdFhxdnI1R0lYY19WREFBX21KdHRlZ0E"
     ws = session.spreadsheet_by_key(key).worksheets[3]
   end
-
 end
 
-JsonFromGoogle::generate_data("2012.data")
+DataFromGoogle::generate_data(ARGV[0])
