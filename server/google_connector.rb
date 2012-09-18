@@ -5,8 +5,8 @@ class GoogleConnector
     @key = key
   end
   
-  def get_worksheet id
-    session.spreadsheet_by_key(@key).worksheets[id]
+  def get_worksheet title
+    session.spreadsheet_by_key(@key).worksheet_by_title(title)
   end
 
   private

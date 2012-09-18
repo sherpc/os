@@ -17,7 +17,7 @@ module DataFromGoogle
   def self.generate_data filename
     connection = GoogleConnector.new("0AmvGiQY4WDYHdFhxdnI1R0lYY19WREFBX21KdHRlZ0E")
     File.open(filename, 'w') do |f|
-      connection.get_worksheet(3).rows.drop(1).each do |row|
+      connection.get_worksheet("Students").rows.drop(1).each do |row|
         f << Student.new(row)
       end
     end
