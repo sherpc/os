@@ -9,7 +9,7 @@ def simplify_lab2 data
 end
 
 connection = GoogleConnector.new("0AmvGiQY4WDYHdFhxdnI1R0lYY19WREFBX21KdHRlZ0E")
-ws = connection.get_worksheet("Vars")
+ws = connection.get_worksheet_by_title("Vars")
 ws.rows.drop(1).each_with_index do |row, row_id|
   if row[1] != ''
     ws[row_id+2, 2] = simplify(row[1])

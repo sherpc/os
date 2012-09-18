@@ -6,7 +6,7 @@ def translit name
 end
 
 connection = GoogleConnector.new("0AmvGiQY4WDYHdFhxdnI1R0lYY19WREFBX21KdHRlZ0E")
-ws = connection.get_worksheet("Students")
+ws = connection.get_worksheet_by_title("Students")
 ws.rows.drop(1).each_with_index do |row, row_id|
   if row[1] == ''
     ws[row_id+2, 2] = translit(row[0])
